@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Expanding Animated search box  Using Jquery</title>
+  
+  
+  
+      <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="wrapper">
+  <div class="search-box">
+     <input type="text" name="search" id="search" class="input">
+     <div class="btn">
+       <i class="fa fa-search" aria-hidden="true"></i>
+     </div>
+  </div>
+</div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+
+  
+
+    <script  src="js/index.js"></script>
+
+<script>
+$(document).ready(function(){
+ $.ajaxSetup({ cache: false });
+ $('#search').keyup(function(){
+  $('#result').html('');
+  $('#state').val('');
+  var t = "BrunoGod";
+  var searchField = $('#search').val();
+  var expression = new RegExp(searchField, "i");
+  $.getJSON('Perfil.json', function(data) {
+  	var strings =JSON.stringify(data);
+	if(data[searchField] != null) {
+		document.getElementById('perfil').innerHTML = "Perfil de(a): " + data[searchField].Nome;
+		document.getElementById('Teste').innerHTML = "Level: " + data[searchField].level + "</br>" + "XP Atual: " +data[searchField].xp+ "</br>";
+	}
+	if(data[searchField] == null) {
+		document.getElementById('Teste').innerHTML =" ";
+		document.getElementById('perfil').innerHTML = "Usuário não encontrado!";
+	}
+  });
+    $.getJSON('Mute.json', function(data) {
+	if(data[searchField] != null) {
+		var strings =JSON.stringify(data);
+		document.getElementById('Muteinfo').innerHTML = "Mute time: " + data[searchField].muteTime + " seconds" + "</br>" + "Mute reason: " + data[searchField].reason;
+	}
+	if(data[searchField] == null) {
+		document.getElementById('Muteinfo').innerHTML = "";
+	}
+  });
+ });
+ 
+ $('#result').on('click', 'li', function() {
+  var click_text = $(this).text().split('|');
+  $('#search').val($.trim(click_text[0]));
+  $("#result").html('');
+ });
+});
+
+</script>
+
+
+
+</body>
+
+</html>
